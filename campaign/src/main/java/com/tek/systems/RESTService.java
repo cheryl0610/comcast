@@ -4,10 +4,7 @@ package com.tek.systems;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -38,20 +35,19 @@ import org.slf4j.LoggerFactory;
 		private static final String DURATION="duration";
 		private static final String AD_CONTENT="ad_content";
 		
-		//ad campaign using HTTP POST
 		@POST
 		@Path("/ad")
 		@Consumes(MediaType.APPLICATION_JSON)
 		public Response addCompaign(InputStream incomingData) {
-			StringBuilder crunchifyBuilder = new StringBuilder();
+			StringBuilder builder = new StringBuilder();
 			Map<String,String> map=new HashMap<String, String>();
 			try {
 				BufferedReader in = new BufferedReader(new InputStreamReader(incomingData));
 				String line = null;
 				while ((line = in.readLine()) != null) {
-					crunchifyBuilder.append(line);
+					builder.append(line);
 				}
-				JSONObject json = new JSONObject(crunchifyBuilder.toString());
+				JSONObject json = new JSONObject(builder.toString());
 				if(memoryInCache.size()!=0 && memoryInCache.containsKey(json.getInt("partner_id"))){
 					return Response.status(400).entity("Partner Id should be unique").build();	
 				}
@@ -75,14 +71,12 @@ import org.slf4j.LoggerFactory;
 			catch (Exception e) {
 				LOG.error("Exception occured is :"+e.getLocalizedMessage());
 			}
-			LOG.info("Data Received: " + crunchifyBuilder.toString());
+			LOG.info("Data Received: " + builder.toString());
 	 
-			// return HTTP response 200 in case of success
-			return Response.status(200).entity(crunchifyBuilder.toString()).build();
+			return Response.status(200).entity(builder.toString()).build();
 		}
 	 
-	
-		//fetch ad campaign for a partner
+		
 		@GET
 		@Path("/ad/{partnerId}")
 		@Produces(MediaType.TEXT_PLAIN)
@@ -111,12 +105,9 @@ import org.slf4j.LoggerFactory;
 			catch (Exception e) {
 				LOG.error("Exception occured is :"+e.getLocalizedMessage());
 			}
-			// return HTTP response 200 in case of success
 			return Response.status(200).entity("Campaign saved successfully.").build();
 		}
 		
-		
-		//all the ad campaigns
 		@GET
 		@Path("/ad/all")
 		@Produces(MediaType.TEXT_PLAIN)
