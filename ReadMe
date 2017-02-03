@@ -1,0 +1,30 @@
+Negative scenarios handled in the application are :
+
+Adding campaign do not allow duplicate partner id ,it will not throw a message if duplicate entered.
+While retrieving the ad if current time is greater than campaign created time + duration , will throw a message stating no active campaign available for the given partner id.
+Duration and partner id  should be entered in numbers ,otherwise will throw a message stating not a valid input.
+
+Below are the urls to access the application :
+
+To insert a new campaign ad --- POST call -- http://localhost:8080/campaign/ad/
+
+To retrieve a campaign ad using partner id   -- GET call --- http://localhost:8080/campaign/ad/{partner id }/
+
+To retrive all comapign ads -- GET call --  http://localhost:8080/campaign/ad/all/
+
+
+Fault tolerant deployment topology :
+
+Suggest we can make HTTPS calls instead of http to make it secure. 
+
+Or
+
+we could go for Traditional DMZ(De-militarized zone) where   DMZ is a server that is isolated by firewalls from both the Internet and the intranet, thus forming a buffer between the two.Blocking any traffic types that are known to be illegal .Providing intrusion containment, should successful intrusions take over processes or processors.
+
+If our application is huge we can opt for load balancer's or clustering environment to handle all the requests without fail & with higher efficiency.
+
+Persistence mechanism :
+
+As we are using memory in cache, it would be a great disadvantage to store the data once the application is down, as once application is down memory in cache is deleted and have to insert the data.
+Advantage is easy to retrieve and store the data.
+Memory in cache would be of great advantage if there is static data which need to be handled instead of storing in database.
